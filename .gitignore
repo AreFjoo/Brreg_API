@@ -1,0 +1,10 @@
+lib/
+bin/
+include/
+lib64
+share/
+brreg/regnr/
+brreg/__pycache__/
+brreg/templates/
+brreg/flaskit.py
+pyvenv.cfg
