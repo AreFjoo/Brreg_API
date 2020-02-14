@@ -68,7 +68,7 @@ class Data:
     
     def dagboknr_liste(self, nrdateordict):
         """
-        "date" gives you the list of "Dagboknr"-dates, "nr" gives you the "Dagboknr"-number. InnNumberm guessing no one would ever need just the list of dates by them selves, so i've added the option to get them both as a dict.
+        "date" gives you the list of "Dagboknr"-dates, "nr" gives you the "Dagboknr"-number. InnNumberm i'm guessing no one would ever need just the list of dates by them selves, so i've added the option to get them also as a dict.
         """
         DagbokNrDatoDict = {}
         DagboknrListe = []
@@ -167,7 +167,6 @@ class Data:
         Postnr = r"(?<=             )[0-9].*(?=$)"
         """
         Postnr regex will work as long as the street name doeasn't start with a number, which it never should.
-        TODO: Check if foreign street names start with numbers. 
         TODO: Found pant with foreign address, gave trouble because of the regex change. 
               Added else statement to fix the issue temporarily. 
         """
@@ -231,6 +230,9 @@ class Data:
         
     
     def create_dataframe(self, simpleorextended):
+        """
+        simple does not inklude the columns "Innsender Adr.", nor "Utpanthaver Adr.
+        """
         d = self.dict_maker()
         df = pd.DataFrame.from_dict(d, orient='index')
         if simpleorextended == "simple":
