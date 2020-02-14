@@ -1,9 +1,0 @@
-bin/
-include/
-lib/
-lib64
-pyenv.cfg
-share/
-brreg/flaskit.py
-brreg/regnr/
-brreg/templates/
