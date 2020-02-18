@@ -39,6 +39,14 @@ class Data:
     def reload_pickle(self):
         """
         This opens a dict of emails that has all the debt collectors i know the email adress to. 
+        To start your own dict you should add this code:
+
+        a = {"Debt-collecter-number" : "email@email"}
+
+        with open('emails.pkl', 'wb') as handle:
+            pkl.dump(a, handle, protocol=pkl.HIGHEST_PROTOCOL)
+
+        You can nest your dict, will add better support for this in get_emails()
         """
         with open('emails.pkl', 'rb') as handle:
             b = pkl.load(handle)
@@ -49,6 +57,7 @@ class Data:
         """
         This produces a list of emails that is connected to the Debt collectors.
         "nested" is an identifier for nested dicts.
+        TODO: Better nested support.
         """
         emailslist = []
         for k, v in self.emailsdict.items():
