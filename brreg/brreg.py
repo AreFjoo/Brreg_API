@@ -64,7 +64,7 @@ class Data:
             if k in nested:
                 for ki, vi in v.items():
                     if ki in self.InnNumberList:
-                        emailslist.append(v)
+                        emailslist.append(vi)
             elif k in self.InnNumberList:
                 emailslist.append(v)
         
