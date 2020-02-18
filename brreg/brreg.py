@@ -1,9 +1,10 @@
 import requests
 import re
 import json
-import pickle
+import pickle as pkl
 import pandas as pd
 from bs4 import BeautifulSoup as bs4
+
 
 class Data:
     
@@ -22,6 +23,7 @@ class Data:
         self.InnNumberList = self.numbers_list()
         self.utpanthaverList = self.utpanthaver_list()
         self.utpanthaverGate = self.utpanthaver_gate()
+        self.emailsdict = self.reload_pickle()
     
     def __repr__(self):
         return f"Data('{self.reg_num}')"       
@@ -34,10 +36,32 @@ class Data:
         representation+=f"{'Sum:':<56}{sum(self.invidpant):.2f}"
         return representation
     
-    """
-    The functions are shown in the order the info is shown in the "Heftelse", hence the somewhat odd order of the functions.
-    """
+    def reload_pickle(self):
+        """
+        This opens a dict of emails that has all the debt collectors i know the email adress to. 
+        """
+        with open('emails.pkl', 'rb') as handle:
+            b = pkl.load(handle)
+
+        return b
     
+    def get_emails(self, nested):
+        """
+        This produces a list of emails that is connected to the Debt collectors.
+        "nested" is an identifier for nested dicts.
+        """
+        emailslist = []
+        for k, v in self.emailsdict.items():
+            if k in nested:
+                for ki, vi in v.items():
+                    if ki in self.InnNumberList:
+                        emailslist.append(v)
+            elif k in self.InnNumberList:
+                emailslist.append(v)
+        
+        return emailslist
+
+
     def get_soup(self):
         brregurl = (f"{self.base_url}/heftelser_motorvogn.jsp?regnr={self.reg_num}")
         r = requests.get(brregurl)
@@ -231,7 +255,7 @@ class Data:
     
     def create_dataframe(self, simpleorextended):
         """
-        simple does not inklude the columns "Innsender Adr.", nor "Utpanthaver Adr.
+        simple does not include the columns "Innsender Adr.", nor "Utpanthaver Adr."
         """
         d = self.dict_maker()
         df = pd.DataFrame.from_dict(d, orient='index')
