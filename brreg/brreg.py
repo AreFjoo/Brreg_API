@@ -41,12 +41,16 @@ class Data:
         This opens a dict of emails that has all the debt collectors i know the email adress to. 
         To start your own dict you should add this code:
 
-        a = {"Debt-collecter-number" : "email@email"}
+        ***********
+        
+        a = {"Debt-collecter-brreg-number" : "email@email"}
 
         with open('emails.pkl', 'wb') as handle:
             pkl.dump(a, handle, protocol=pkl.HIGHEST_PROTOCOL)
 
-        You can nest your dict, will add better support for this in get_emails()
+        ***********
+
+        You can nest your dict for multiple emailadresses according to what team at the debt collector you want to send the email to, will add better support for this in get_emails()
         """
         with open('emails.pkl', 'rb') as handle:
             b = pkl.load(handle)
@@ -73,7 +77,8 @@ class Data:
 
     def get_soup(self):
         brregurl = (f"{self.base_url}/heftelser_motorvogn.jsp?regnr={self.reg_num}")
-        r = requests.get(brregurl)
+        s = requests.session()
+        r = s.get(brregurl)
         soup = bs4(r.content, 'lxml')
         return soup
         
@@ -101,7 +106,7 @@ class Data:
     
     def dagboknr_liste(self, nrdateordict):
         """
-        "date" gives you the list of "Dagboknr"-dates, "nr" gives you the "Dagboknr"-number. InnNumberm i'm guessing no one would ever need just the list of dates by them selves, so i've added the option to get them also as a dict.
+        "date" gives you the list of "Dagboknr"-dates, "nr" gives you the "Dagboknr"-number. I'm guessing no one would ever need just the list of dates by them selves, so i've added the option to get them also as a dict.
         """
         DagbokNrDatoDict = {}
         DagboknrListe = []
@@ -257,7 +262,7 @@ class Data:
             dictInnUt[c]["Utpanthaver Adr."] = ""
             dictInnUt[c]["KR"] = ""
             dictInnUt[c]["Tot KR"] = TOTNOK[len(self.innsenderliste) - 1]
-            dictInnUt[c]["Tot KR kun UT.Pant"] = TOTNOK[len(self.innsenderliste) - 1] - NOK[1]
+            dictInnUt[c]["Tot KR kun UT.Pant"] = f"{TOTNOK[len(self.innsenderliste) - 1] - NOK[1]:.2f}"
 
         return dictInnUt
         
@@ -294,3 +299,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

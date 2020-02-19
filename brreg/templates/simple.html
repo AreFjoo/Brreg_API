@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Resultat</h1>
+<h1>{{ regnr }}</h1>
 
 {% for table in tables %}
             {{ table|safe }}
@@ -31,6 +31,7 @@
     Ber om en velvillig behandling.<br>
     <br>
     Gjelder deres utleggspant med følgende dagboknummer:<br>
+    <br>
     {% for panteliste in panteliste %}
         {{ panteliste }} <br>
     {% endfor %}
