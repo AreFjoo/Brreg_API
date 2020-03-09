@@ -7,4 +7,6 @@ brreg/regnr/
 brreg/__pycache__/
 brreg/templates/
 brreg/flaskit.py
+brreg/emails.pkl
+brreg.emailsdict.txt
 pyvenv.cfg

@@ -174,17 +174,19 @@ class Data:
         pre = self.moresoup
         UtHaverRegex = r"(?<=Utlegg til fordel for<br\/>).*(?=Org.nr)"
         SpantRegex = r"(?<=Salgspant i motorvogner:).*(?=<br\/>)"
-        UtenlandsRegex = r"(?<=Utlegg til fordel for<br/>).*(?=<br?/?>)"
+        UtenlandsRegex = r"(?<=Utlegg til fordel for<br\/>).*?(?=<br/>)"
         for i in pre:
-            if re.findall(UtHaverRegex, str(i)):
-                utpantHaver = re.findall(UtHaverRegex, str(i))[0].strip()
-                UtPantHaverList.append(utpantHaver)
-            elif re.findall(SpantRegex, str(i)):
-                utpantHaver = r"SALGSPANT"
-                UtPantHaverList.append(utpantHaver)
+            if "Org.nr" in str(i):
+                if re.findall(UtHaverRegex, str(i)):
+                    utpantHaver = re.findall(UtHaverRegex, str(i))[0].strip()
+                    UtPantHaverList.append(utpantHaver)
+                elif re.findall(SpantRegex, str(i)):
+                    utpantHaver = r"SALGSPANT"
+                    UtPantHaverList.append(utpantHaver)
             else:
                 utpantHaver = re.findall(UtenlandsRegex, str(i))[0].strip()
                 UtPantHaverList.append(utpantHaver)
+
         return UtPantHaverList
     
     def utpanthaver_org(self):
